@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Setup Creator</title>
+        <link rel ="stylesheet" href="static/css/boostrap.min.css">
+        <script src="static/js/jquery-3.7.1.min.js"></script>    
+        <script>
+            $(document).ready(function() {
+            $('#spinner-container').hide();
+            $('#createExeButton').click(function(){
+                var formOfData = new FormData($('#ippToolArchiveForm')[0]);
+                formOfData.append('csrfmiddlewaretoken','{{csrf_token}}');
+                $('#createExeButton').hide();
+                $('#spinner-container').show();
+                
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'run_python_script' %}",
+                    data: formOfData,
+                    processData : false,
+                    contentType : false,
+                    success:function(response) {
+                        alert(response.message);
+                        if(response.status == 'success')
+                        {
+                            $('#spinner-container').hide();
+                           
+                            $('#createExeButton').hide();
+                            $('#downloadLink').attr('href','{% url "download_zip" %}').show();
+                            
+                        }
+                    },
+                    error:function(response) {
+                        $('#spinner-container').hide();
+                        $('#createExeButton').show();
+                        alert('An error occurred');
+                    }
+                    });
+                });
+            });
+
+      
+            
+        </script>   
+       <style>
+            h1 
+            {
+                text-align: center;
+                color: #ffa833;
+                margin-top: 20px;
+            }
+            .label-container
+            {
+           
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          
+          
+           }
+           .form-group
+           {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            width: 100%;
+           }
+
+           .form-group label
+           {
+
+            margin-right: 10px;
+            width: 200px;
+            text-align: center;
+
+           }
+        
+           .form-group input,
+           .form-group textarea
+           {
+
+            width: 50%;
+           }
+
+           .btn-container
+           {
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               margin-top: 20px;
+           }
+            
+           .spinner-container
+           {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        
+           
+    
+           }
+            .spinner-border
+            {
+           
+                
+                margin-bottom: 10px;
+            }
+          
+           
+          
+           
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Create Setup for IPP Tool</h1>
+           <!-- <label class="badge badge-primary">Create Setup for IPP Tool</label> --> 
+        <div class="label-container">
+            <form enctype="multipart/form-data" id="ippToolArchiveForm" >
+                {% csrf_token %}
+            <div class="form-group">
+                <label class=" badge-secondary">IPP Tool Version:</label>
+                <input type="text" name="version" id="version" class="form-control" >
+            
+            </div>
+    
+          
+           
+                <div class="form-group">
+            <label for="ippToolArchive" class=" badge-secondary" >Please choose IPP Tool Archive File:</label>
+            <input type="file" name="ippToolArchive" id="ippToolArchive" class="form-control-file" accept=".zip" >
+        </div>
+         
+        
+    <div class="form-group">
+            <label class=" badge-secondary">Please write about the new version updates:</label>
+            <textarea name="updateInfo" class="form-control"></textarea>
+        </div>
+         
+ 
+            </form>
+     
+
+        <div class="btn-container">
+            <button type="button" id="createExeButton" class="btn btn-primary mt-3"> Create the Exe</button>
+        </div>
+
+
+
+        <div id="spinner-container" class="spinner-container">
+        <div id="spinner" class="spinner-border text-success" role="status"></div>
+                <span class="sr-only">Creating the exe. Please wait...</span>
+            </div>
+
+
+            <div class="btn-container">
+            <a id="downloadLink" href="#" class="btn btn-success mt-3" style="display: none; ">Download the Setup</a>
+        </div>
+
+
+
+
+    </div>  
+        </div>
+    </body>
+</html>
