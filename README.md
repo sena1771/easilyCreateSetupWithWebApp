@@ -1,3 +1,7 @@
+
+This is a setup creator project with a Django web application. It creates and downloads the desired exe with using Pyinstaller inside. 
+
+
 django-admin startproject setupCreator --start the project
 
 
