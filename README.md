@@ -1,7 +1,8 @@
 
 This is a setup creator Django web application project . It creates and downloads the desired exe with using Pyinstaller inside. 
-
-
+For the POST web operations Jquery Ajax has been used.
+This website designed as a basic format but some Bootstrap is used.
+For the exe operations and running script commands on the Python the Pyinstaller is used.
 django-admin startproject setupCreator --start the project
 
 
